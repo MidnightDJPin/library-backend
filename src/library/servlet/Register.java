@@ -43,16 +43,20 @@ public class Register extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		
 		Reader newReader = new Gson().fromJson(json, Reader.class);
+		System.out.println("收到注册请求，账号：" + newReader.getAccount() + " "
+				+ "密码：" + newReader.getPassword());
 		String repeat = "select * from reader where account='" + newReader.getAccount() + "'";
+		PrintWriter writer = response.getWriter();
 		try {
 			PreparedStatement pst = (PreparedStatement) connection.prepareStatement(repeat);
 			ResultSet rs = pst.executeQuery();
-			PrintWriter writer = response.getWriter();
+			
 			if (rs.next()) {
 				response.setStatus(403);
 				writer.write("{\"state\":\"failed\","
 	        			+ "\"message\":\"该账户已存在\""
 	        			+ "}");
+				System.out.println("账户已存在");
 			} else {
 				String registerSQL = "insert into reader (account, password, rname, phone, email, admin, rstate)"
 						+ "values(?,?,?,?,?,?,?)";
@@ -63,7 +67,7 @@ public class Register extends HttpServlet {
 				pst.setString(4, newReader.getPhone());
 				pst.setString(5, newReader.getEmail());
 				pst.setBoolean(6, newReader.isAdmin());
-				pst.setBoolean(7, newReader.isRstate());
+				pst.setBoolean(7, true);
 				synchronized (this) {
 					int resultCode = pst.executeUpdate();
 					if (resultCode > 0) {
@@ -71,6 +75,7 @@ public class Register extends HttpServlet {
 						writer.write("{\"state\":\"succeed\","
 			        			+ "\"message\":\"注册成功\""
 			        			+ "}");
+						System.out.println("注册成功");
 					} else {
 						response.setStatus(403);
 						writer.write("{\"state\":\"failed\","
@@ -78,18 +83,16 @@ public class Register extends HttpServlet {
 			        			+ "}");
 					}
 				}
-				writer.close();
 				Database.closeAll(rs, pst, connection);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			PrintWriter writer = response.getWriter();
 			response.setStatus(500);
 			writer.write("{\"state\":\"failed\","
         			+ "\"message\":\"服务器错误\""
         			+ "}");
-			writer.close();
 		}
+		writer.close();
 	}
 
 }

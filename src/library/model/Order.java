@@ -1,20 +1,20 @@
 package library.model;
 
-import java.util.Date;
 
 public class Order {
 	private int oid;
 	private int rid;
 	private int sid;
-	private Date ordertime;
-	private Date starttime;
-	private Date endtime;
+	private String ordertime;
+	private String starttime;
+	private String endtime;
 	
 	public Order() {
 		super();
 	}
+	
 
-	public Order(int oid, int rid, int sid, Date ordertime, Date starttime, Date endtime) {
+	public Order(int oid, int rid, int sid, String ordertime, String starttime, String endtime) {
 		super();
 		this.oid = oid;
 		this.rid = rid;
@@ -23,6 +23,7 @@ public class Order {
 		this.starttime = starttime;
 		this.endtime = endtime;
 	}
+
 
 	public int getOid() {
 		return oid;
@@ -48,29 +49,34 @@ public class Order {
 		this.sid = sid;
 	}
 
-	public Date getOrdertime() {
+
+	public String getOrdertime() {
 		return ordertime;
 	}
 
-	public void setOrdertime(Date ordertime) {
+
+	public void setOrdertime(String ordertime) {
 		this.ordertime = ordertime;
 	}
 
-	public Date getStarttime() {
+
+	public String getStarttime() {
 		return starttime;
 	}
 
-	public void setStarttime(Date starttime) {
+
+	public void setStarttime(String starttime) {
 		this.starttime = starttime;
 	}
 
-	public Date getEndtime() {
+
+	public String getEndtime() {
 		return endtime;
 	}
 
-	public void setEndtime(Date endtime) {
+
+	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
-	
 	
 }

@@ -1,6 +1,5 @@
 package library.model;
 
-import java.util.Date;
 
 public class Reader {
 	private int rid;
@@ -11,14 +10,14 @@ public class Reader {
 	private String email;
 	private boolean admin;
 	private boolean rstate;
-	private Date bantime;
+	private String bantime;
 	
 	public Reader() {
 		super();
-	}
+	} 
 
 	public Reader(int rid, String account, String password, String rname, String phone, String email, boolean admin,
-			boolean rstate, Date bantime) {
+			boolean rstate, String bantime) {
 		super();
 		this.rid = rid;
 		this.account = account;
@@ -95,11 +94,11 @@ public class Reader {
 		this.rstate = rstate;
 	}
 
-	public Date getBantime() {
+	public String getBantime() {
 		return bantime;
 	}
 
-	public void setBantime(Date bantime) {
+	public void setBantime(String bantime) {
 		this.bantime = bantime;
 	}
 }

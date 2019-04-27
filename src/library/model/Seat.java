@@ -2,13 +2,13 @@ package library.model;
 
 public class Seat {
 	private int sid;
-	private String sname;
+	private int rid;
 	private int sstate;
 	
-	public Seat(int sid, String sname, int sstate) {
+	public Seat(int sid, int rid, int sstate) {
 		super();
 		this.sid = sid;
-		this.sname = sname;
+		this.rid = rid;
 		this.sstate = sstate;
 	}
 	public Seat() {
@@ -20,11 +20,11 @@ public class Seat {
 	public void setSid(int sid) {
 		this.sid = sid;
 	}
-	public String getSname() {
-		return sname;
+	public int getRid() {
+		return rid;
 	}
-	public void setSname(String sname) {
-		this.sname = sname;
+	public void setRid(int rid) {
+		this.rid = rid;
 	}
 	public int getSstate() {
 		return sstate;

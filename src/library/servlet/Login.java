@@ -43,6 +43,8 @@ public class Login extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		
 		Reader loginReader = new Gson().fromJson(json, Reader.class);
+		System.out.println("收到登录请求，账号：" + loginReader.getAccount() + " "
+				+ "密码：" + loginReader.getPassword());
 		String sql = "select * from reader where "
 				+ "account='" + loginReader.getAccount() + "' AND "
 						+ "password='" + loginReader.getPassword() + "'";
@@ -53,26 +55,31 @@ public class Login extends HttpServlet {
 			ResultSet rs = pst.executeQuery();
 			
 			if (rs.next()) {
+				Reader reader = new Reader(rs.getInt("rid"), rs.getString("account"), rs.getString("password"), 
+						rs.getString("rname"), rs.getString("phone"), rs.getString("email"), 
+						(rs.getInt("admin") == 1), (rs.getInt("rstate") == 1), 
+						(rs.getTimestamp("bantime") == null)? null : (rs.getTimestamp("bantime").toString()));
 				response.setStatus(200);
-				writer.write("{\"state\":\"succeed\","
-	        			+ "\"message\":\"登录成功\""
-	        			+ "}");
+				Gson gson = new Gson();
+				String responseJson = gson.toJson(reader);
+				writer.write(responseJson);
+				System.out.println("登陆成功");
 			} else {
-				response.setStatus(404);
+				response.setStatus(401);
 				writer.write("{\"state\":\"failed\","
 	        			+ "\"message\":\"账号或密码不正确\""
 	        			+ "}");
+				System.out.println("账号或密码不正确");
 			}
 			Database.closeAll(rs, pst, connection);
 		} catch (SQLException e) {
-			e.printStackTrace();
 			e.printStackTrace();
 			response.setStatus(500);
 			writer.write("{\"state\":\"failed\","
         			+ "\"message\":\"服务器错误\""
         			+ "}");
-			writer.close();
 		}
+		writer.close();
 	}
 
 }
